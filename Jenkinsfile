@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/peeturasanen/TimeCalculator.git'
+                git branch: 'main', url: 'https://github.com/peeturasanen/DiceRoll.git'
 
             }
         }
