@@ -1,38 +1,38 @@
+
 pipeline {
     agent any
 
     stages {
-        stage('Checkout Code') {
+        stage('Checkout') {
             steps {
-                git 'https://github.com/peeturasanen/DiceRoll.git'
+                git branch: 'main', url: 'https://github.com/peeturasanen/TimeCalculator.git'
+
             }
         }
+
         stage('Build') {
             steps {
-                bat 'mvn clean package'
+                bat 'mvn clean install'
             }
         }
-        stage('Run Unit Tests') {
+
+        stage('Test') {
             steps {
                 bat 'mvn test'
             }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'  // Capture test reports
-                }
-            }
         }
-        stage('Code Coverage Report') {
+
+        stage('Code Coverage') {
             steps {
-                bat 'mvn jacoco:report'
-            }
-            post {
-                always {
-                    jacoco execPattern: 'target/jacoco.exec'
-                }
+                jacoco execPattern: '**/target/jacoco.exec'
             }
         }
     }
+
+    post {
+        always {
+            junit '**/target/surefire-reports/*.xml'
+            jacoco execPattern: '**/target/jacoco.exec'
+        }
+    }
 }
-
-
